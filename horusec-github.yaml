@@ -1,0 +1,19 @@
+  horusec-security:
+    name: horusec-security
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          
+      - name: Install Horusec CLI
+        run: |
+          curl -LJO https://github.com/ZupIT/horusec/releases/latest/download/horusec_linux_amd64
+          chmod +x horusec_linux_amd64
+          sudo mv horusec_linux_amd64 /usr/local/bin/horusec
+
+      - name: Run Horusec Security
+        run: |
+         horusec start -p . --disable-docker="true" > horusec_report.txt
+         cat horusec_report.txt
