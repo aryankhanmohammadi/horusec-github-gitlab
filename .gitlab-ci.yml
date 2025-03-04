@@ -1,0 +1,16 @@
+stages:
+  - security
+
+HorusecScan SAST:
+  stage: security
+  script:
+    - curl -LJO https://github.com/ZupIT/horusec/releases/latest/download/horusec_linux_amd64
+    - chmod +x horusec_linux_amd64
+    - sudo mv horusec_linux_amd64 /usr/local/bin/horusec
+    - horusec start -p . --disable-docker="true" > horusec_report.txt
+    - sed -i '/Scanning code.../d' report.txt
+    - cat report.txt
+    
+  retry: 2
+  tags:
+    - "runner-name"
